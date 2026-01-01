@@ -1,0 +1,237 @@
+:root {
+  --card-radius: 30px;
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+}
+
+.pc-card-wrapper {
+  perspective: 1000px;
+  transform: translate3d(0, 0, 0.1px);
+  position: relative;
+  touch-action: none;
+}
+
+/* Hide the background glow/noise */
+.pc-behind {
+  display: none;
+}
+
+.pc-card {
+  height: 80svh;
+  max-height: 540px;
+  display: grid;
+  aspect-ratio: 0.718;
+  border-radius: var(--card-radius);
+  position: relative;
+
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.pc-card-wrapper:hover .pc-card,
+.pc-card-wrapper.active .pc-card {
+  transform: rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+}
+
+.pc-card * {
+  display: grid;
+  grid-area: 1/-1;
+  border-radius: var(--card-radius);
+  pointer-events: none;
+}
+
+.pc-inside {
+  inset: 0;
+  position: absolute;
+  /* Transparent inner background for glass effect */
+  background: transparent;
+  transform: none;
+  z-index: 2;
+}
+
+/* Hide glares and shines */
+.pc-shine,
+.pc-glare {
+  display: none;
+}
+
+.pc-content.pc-avatar-content {
+  overflow: visible;
+  transform: translateZ(20px);
+  /* Slight pop */
+  mix-blend-mode: normal;
+  /* Fix blend mode for clarity */
+}
+
+/* Avatar Image */
+.pc-avatar-content .avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.pc-card-wrapper:hover .avatar {
+  opacity: 1;
+}
+
+/* User Info Box (Bottom) */
+.pc-user-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* Glass style for the info box */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+
+  padding: 12px 14px;
+  pointer-events: auto;
+  transform: translateZ(40px);
+  /* Pop out more */
+}
+
+.pc-user-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pc-mini-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.pc-mini-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pc-user-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pc-handle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.pc-status {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pc-status::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #4ade80;
+  /* Online green */
+  box-shadow: 0 0 8px #4ade80;
+}
+
+.pc-contact-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pc-contact-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Top text details (Name/Title) */
+.pc-content:not(.pc-avatar-content) {
+  z-index: 5;
+  transform: translateZ(30px);
+}
+
+.pc-details {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Make text clearer on hover */
+.pc-card-wrapper:hover .pc-details {
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+.pc-details h3 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  color: #fff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.pc-details p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 8px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pc-card {
+    height: 60svh;
+  }
+
+  .pc-details h3 {
+    font-size: 1.5rem;
+  }
+}

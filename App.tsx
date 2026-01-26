@@ -86,12 +86,12 @@ const SKILL_ITEMS = [
 ];
 
 const PROJECT_ITEMS = [
-  { id: 1, title: 'AI Code Review Bot', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/AI-Code-Review-Bot' },
-  { id: 2, title: 'AI PDF Chatbot', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/ai-pdf-chatbot-langchain' },
-  { id: 3, title: 'Custom AI Agent', category: 'Python', year: '2025', link: 'https://github.com/HemanthKumar817/Custom-AI-Agent-with-Memory' },
-  { id: 4, title: 'Food Delivery', category: 'JavaScript', year: '2025', link: 'https://github.com/HemanthKumar817/Food-Delivery' },
-  { id: 5, title: 'Placement Prime', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/Placement-Prime' },
-  { id: 6, title: 'Portfolio', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/Portfolio-Hemanth-Kumar' }
+  { id: 1, title: 'AI Code Review Bot', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/AI-Code-Review-Bot', className: 'md:col-span-2 md:row-span-2 bg-gradient-to-br from-purple-900/40 to-black/40' },
+  { id: 2, title: 'AI PDF Chatbot', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/ai-pdf-chatbot-langchain', className: 'md:col-span-1 md:row-span-1' },
+  { id: 3, title: 'Custom AI Agent', category: 'Python', year: '2025', link: 'https://github.com/HemanthKumar817/Custom-AI-Agent-with-Memory', className: 'md:col-span-1 md:row-span-1' },
+  { id: 4, title: 'Food Delivery', category: 'JavaScript', year: '2025', link: 'https://github.com/HemanthKumar817/Food-Delivery', className: 'md:col-span-2 md:row-span-1' },
+  { id: 5, title: 'Placement Prime', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/Placement-Prime', className: 'md:col-span-1 md:row-span-1' },
+  { id: 6, title: 'Portfolio', category: 'TypeScript', year: '2025', link: 'https://github.com/HemanthKumar817/Portfolio-Hemanth-Kumar', className: 'md:col-span-1 md:row-span-1' }
 ];
 
 export default function App() {
@@ -142,7 +142,7 @@ export default function App() {
 
   return (
     <div
-      className="relative w-full bg-black text-white selection:bg-[var(--theme-color)] selection:text-white"
+      className="relative w-full bg-black text-white selection:bg-[var(--theme-color)] selection:text-white font-[Outfit]"
       style={{ "--theme-color": currentColors[0] } as React.CSSProperties}
     >
       {/* Background Simulation - Persistent across scroll */}
@@ -173,28 +173,30 @@ export default function App() {
       </div>
 
       {/* Floating Header */}
-      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 py-8 flex justify-between items-center ${scrolled ? 'bg-black/60 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent'}`}>
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 py-8 flex justify-between items-center ${scrolled ? 'bg-black/80 backdrop-blur-2xl border-b border-white/5 py-4' : 'bg-transparent'}`}>
         <div className="text-3xl font-black tracking-tighter pointer-events-auto cursor-default select-none transition-transform hover:scale-105">
-          <span className="text-white">H</span><span className="text-purple-500">K</span>
+          <span className="text-white">H</span><span className="text-[var(--theme-color)]">K</span>
         </div>
         <nav className="hidden md:flex gap-12 pointer-events-auto">
           <button
             onClick={() => setColorPickerOpen(true)}
-            className="flex items-center gap-2 text-[10px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.2em]"
+            className="flex items-center gap-2 text-[11px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.2em]"
+            aria-label="Open color picker"
           >
-            <Palette size={12} />
+            <Palette size={14} />
             <span>Theme</span>
           </button>
-          <a href="#about" className="text-[10px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.4em]">About</a>
-          <a href="#skills" className="text-[10px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.4em]">Skills</a>
-          <a href="#projects" className="text-[10px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.4em]">Projects</a>
-          <a href="#contact" className="text-[10px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.4em]">Contact</a>
+          <a href="#about" className="text-[11px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.2em]">About</a>
+          <a href="#skills" className="text-[11px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.2em]">Skills</a>
+          <a href="#projects" className="text-[11px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.2em]">Projects</a>
+          <a href="#contact" className="text-[11px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.2em]">Contact</a>
         </nav>
 
         {/* Mobile Menu Toggle */}
         <button
           className="md:hidden text-white p-2"
           onClick={() => setMobileMenuOpen(true)}
+          aria-label="Open menu"
         >
           <Menu size={24} />
         </button>
@@ -206,6 +208,7 @@ export default function App() {
           <button
             className="absolute top-8 right-6 text-white/50 hover:text-white transition-colors"
             onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
           >
             <X size={32} />
           </button>
@@ -216,15 +219,16 @@ export default function App() {
                 setColorPickerOpen(true);
                 setMobileMenuOpen(false);
               }}
-              className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-white hover:text-purple-400 transition-colors"
+              className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors"
+              aria-label="Customize theme"
             >
               <Palette size={24} />
               <span>Theme</span>
             </button>
-            <a onClick={() => setMobileMenuOpen(false)} href="#about" className="text-xl font-black uppercase tracking-widest text-white hover:text-purple-400 transition-colors">About</a>
-            <a onClick={() => setMobileMenuOpen(false)} href="#skills" className="text-xl font-black uppercase tracking-widest text-white hover:text-purple-400 transition-colors">Skills</a>
-            <a onClick={() => setMobileMenuOpen(false)} href="#projects" className="text-xl font-black uppercase tracking-widest text-white hover:text-purple-400 transition-colors">Projects</a>
-            <a onClick={() => setMobileMenuOpen(false)} href="#contact" className="text-xl font-black uppercase tracking-widest text-white hover:text-purple-400 transition-colors">Contact</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#about" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">About</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#skills" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Skills</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#projects" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Projects</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#contact" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Contact</a>
           </nav>
         </div>
       )}
@@ -240,7 +244,7 @@ export default function App() {
       {/* Hero / About Section */}
       <section id="home" className="relative z-10 w-full h-screen flex flex-col items-center justify-center px-6 pt-20 pointer-events-none">
         <div className="text-center max-w-5xl mx-auto flex flex-col items-center mt-[-5vh]">
-          <h1 className="text-[12vw] md:text-[10rem] font-black tracking-tighter leading-[0.85] mb-12 select-none opacity-90 drop-shadow-2xl">
+          <h1 className="text-[12vw] md:text-[10rem] font-black tracking-tighter leading-[0.85] mb-12 select-none opacity-90 drop-shadow-2xl bg-clip-text text-transparent bg-gradient-to-br from-white via-gray-200 to-gray-500">
             HEMANTH<br />KUMAR
           </h1>
 
@@ -295,6 +299,7 @@ export default function App() {
               <button
                 onClick={() => setColorPickerOpen(true)}
                 className="group relative flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all hover:scale-105 active:scale-95"
+                aria-label="Open color picker"
               >
                 <div
                   className="w-8 h-8 rounded-full border border-white/30 shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-colors duration-500"
@@ -311,7 +316,8 @@ export default function App() {
       {/* Skills Section */}
       <section id="skills" className="relative z-10 w-full min-h-screen pt-24">
         <div className="px-6 mb-12 max-w-7xl mx-auto flex flex-col items-center">
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-center">Skills</h2>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-center bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">Skills</h2>
+          <div className="w-24 h-1 bg-[var(--theme-color)] mt-4"></div>
         </div>
 
         <div className="h-[70vh] border-y border-white/5 backdrop-blur-sm">
@@ -326,7 +332,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-20" id="about">
           <div className="flex flex-col justify-center">
             <h3 className="text-3xl font-black tracking-tighter uppercase mb-8">About</h3>
-            <p className="text-gray-400 leading-relaxed text-lg font-medium">
+            <p className="text-gray-300 leading-loose text-lg font-normal tracking-wide">
               Hemanth Kumar focuses on the intersection of Artificial Intelligence and human-centric design.
               I specialize in building intelligent agents and adaptive systems that enhance human capabilities,
               creating software that is not just functional, but truly smart.
@@ -350,35 +356,45 @@ export default function App() {
         </div>
       </section>
 
-      {/* Projects Section */}
+      {/* Projects Section - Bento Grid */}
       <section id="projects" className="relative z-10 w-full min-h-screen py-32 border-t border-white/5 backdrop-blur-sm bg-black/20">
         <div className="px-6 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div>
-              <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none">Projects</h2>
+              <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-600">Projects</h2>
             </div>
-            <p className="text-gray-500 max-w-sm text-sm uppercase tracking-widest leading-loose">
-              A comprehensive record of experimental prototypes and production-ready systems developed by Hemanth Kumar.
+            <p className="text-gray-500 max-w-sm text-sm uppercase tracking-widest leading-loose text-right">
+              A comprehensive record of experimental prototypes and production-ready systems.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[280px]">
             {PROJECT_ITEMS.map((project) => (
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 key={project.id}
-                className="group relative bg-white/[0.03] border border-white/10 p-8 rounded-xl hover:bg-white/[0.08] transition-all cursor-pointer block"
+                className={`group relative border border-white/10 p-8 rounded-2xl hover:border-white/20 transition-all duration-500 cursor-pointer block overflow-hidden bg-white/[0.03] hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] ${project.className}`}
               >
-                <span className="text-[8px] font-mono opacity-30 mb-8 block">0{project.id} / {project.year}</span>
-                <h4 className="text-xl font-black uppercase tracking-tight mb-2 group-hover:text-[var(--theme-color)] transition-colors">{project.title}</h4>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">{project.category}</p>
-                <div className="absolute top-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="7" y1="17" x2="17" y2="7"></line>
-                    <polyline points="7 7 17 7 17 17"></polyline>
-                  </svg>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60 z-10" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--theme-color),transparent)] opacity-0 group-hover:opacity-20 transition-opacity duration-500 z-0" />
+
+                <div className="relative z-20 h-full flex flex-col justify-between">
+                  <div className="flex justify-between items-start">
+                    <span className="text-[10px] font-mono opacity-50 px-2 py-1 border border-white/20 rounded-md bg-black/40 backdrop-blur-md">0{project.id}</span>
+                    <div className="p-2 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7"></line>
+                        <polyline points="7 7 17 7 17 17"></polyline>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-2xl font-black uppercase tracking-tight mb-2 group-hover:text-[var(--theme-color)] transition-colors line-clamp-2">{project.title}</h4>
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">{project.category} &mdash; {project.year}</p>
+                  </div>
                 </div>
               </a>
             ))}

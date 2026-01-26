@@ -5,7 +5,7 @@ A highly interactive, immersive digital portfolio built with modern web technolo
 ![Portfolio Preview](https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200)
 
 ## 🚀 Live Demo
-*(Add your live demo link here if deployed)*
+[View Live Portfolio](https://hemanthkumar817.github.io/Portfolio-Hemanth-Kumar/)
 
 ## ✨ Features
 
@@ -43,6 +43,40 @@ A highly interactive, immersive digital portfolio built with modern web technolo
     ```bash
     npm run dev
     ```
+
+4.  **Build for Production**
+    ```bash
+    npm run build
+    ```
+
+5.  **Preview Production Build**
+    ```bash
+    npm run preview
+    ```
+
+## 🚀 Deployment
+
+This portfolio is automatically deployed to GitHub Pages using GitHub Actions. Every push to the `main` branch triggers a new deployment.
+
+### Manual Deployment
+
+To deploy manually:
+
+1. Ensure all changes are committed
+2. Push to the `main` branch:
+   ```bash
+   git push origin main
+   ```
+3. The GitHub Actions workflow will automatically build and deploy the site
+
+### GitHub Pages Setup
+
+To enable GitHub Pages for your fork:
+
+1. Go to your repository Settings
+2. Navigate to Pages (under Code and automation)
+3. Under "Build and deployment", select "GitHub Actions" as the source
+4. The site will be available at: `https://[your-username].github.io/Portfolio-Hemanth-Kumar/`
 
 ## 📧 Contact
 

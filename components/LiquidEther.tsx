@@ -533,6 +533,10 @@ export default function LiquidEther({
         Common.renderer.render(this.scene, this.camera);
         Common.renderer.setRenderTarget(null);
       }
+      dispose() {
+        if (this.geometry) this.geometry.dispose();
+        if (this.material) this.material.dispose();
+      }
     }
 
     class Advection extends ShaderPass {
@@ -841,6 +845,17 @@ export default function LiquidEther({
         const pressure = this.poisson.update({ iterations: this.options.iterations_poisson });
         this.pressure.update({ vel, pressure });
       }
+      dispose() {
+        for (let key in this.fbos) {
+          this.fbos[key].dispose();
+        }
+        this.advection?.dispose();
+        this.externalForce?.dispose();
+        this.viscous?.dispose();
+        this.divergence?.dispose();
+        this.poisson?.dispose();
+        this.pressure?.dispose();
+      }
     }
 
     class Output {
@@ -879,6 +894,11 @@ export default function LiquidEther({
       update() {
         this.simulation.update();
         this.render();
+      }
+      dispose() {
+        this.output.geometry.dispose();
+        (this.output.material as THREE.Material).dispose();
+        this.simulation.dispose();
       }
     }
 
@@ -950,6 +970,7 @@ export default function LiquidEther({
         window.removeEventListener('resize', this._resize);
         document.removeEventListener('visibilitychange', this._onVisibility);
         Mouse.dispose();
+        this.output?.dispose();
         if (Common.renderer) {
           const canvas = Common.renderer.domElement;
           if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);

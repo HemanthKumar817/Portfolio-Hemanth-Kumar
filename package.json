@@ -18,6 +18,7 @@
     "three": "^0.182.0"
   },
   "devDependencies": {
+    "@railway/cli": "^4.27.3",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",

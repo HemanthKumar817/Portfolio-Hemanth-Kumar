@@ -1,24 +1,128 @@
 
-import React, { useState, useEffect } from 'react';
-import LiquidEther from './components/LiquidEther';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ThemeSelector from './components/ThemeSelector';
 import FlowingMenu from './components/FlowingMenu';
 import ProfileCard from './components/ProfileCard';
 import Contact from './components/Contact';
 import TargetCursor from './components/TargetCursor';
-import HueWheelColorPicker from './components/HueWheelColorPicker';
 import { Palette, X, Menu } from 'lucide-react';
-import { PRESETS, SKILL_ITEMS, PROJECT_ITEMS, DEFAULT_PALETTES } from './constants';
+import { PRESETS, SKILL_ITEMS, PROJECT_ITEMS, THEMES, Theme } from './constants';
 
 
 
 
 export default function App() {
-  const [activePalette, setActivePalette] = useState(0);
+  const [currentTheme, setCurrentTheme] = useState<Theme>(THEMES[0]);
   const [activePresetIdx, setActivePresetIdx] = useState(0);
   const [scrolled, setScrolled] = useState(false);
-  const [customHue, setCustomHue] = useState<number | null>(null);
-  const [colorPickerOpen, setColorPickerOpen] = useState(false);
+  const [themeSelectorOpen, setThemeSelectorOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const heroRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const skillsRef = useRef<HTMLDivElement>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      // Initial Load Animation
+      const tl = gsap.timeline();
+
+      // Nav
+      tl.from(navRef.current, {
+        y: -50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+      });
+
+      // Hero Text - Staggered lines
+      tl.from(".hero-text-line", {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "power4.out"
+      }, "-=0.5");
+
+      // Hero Controls
+      tl.from(".hero-controls", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out"
+      }, "-=0.8");
+
+      // Scroll Triggers
+
+      // Skills Title
+      gsap.from(".skills-title", {
+        scrollTrigger: {
+          trigger: skillsRef.current,
+          start: "top 80%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+      });
+
+      // About & Card
+      gsap.from(".about-content", {
+        scrollTrigger: {
+          trigger: ".about-section",
+          start: "top 70%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out"
+      });
+
+      // Projects Title
+      gsap.from(".projects-title", {
+        scrollTrigger: {
+          trigger: projectsRef.current,
+          start: "top 80%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+      });
+
+      // Project Items
+      gsap.from(".project-card", {
+        scrollTrigger: {
+          trigger: ".projects-grid",
+          start: "top 85%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power2.out"
+      });
+
+    });
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('--bg-primary', currentTheme.colors.bgPrimary);
+    root.style.setProperty('--bg-secondary', currentTheme.colors.bgSecondary);
+    root.style.setProperty('--text-primary', currentTheme.colors.textPrimary);
+    root.style.setProperty('--text-secondary', currentTheme.colors.textSecondary);
+    root.style.setProperty('--accent-primary', currentTheme.colors.accent);
+    root.style.setProperty('--surface-glass', currentTheme.colors.surface);
+    root.style.setProperty('--theme-color', currentTheme.colors.accent);
+  }, [currentTheme]);
 
   useEffect(() => {
     let ticking = false;
@@ -35,19 +139,6 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Helper to generate palette from hue
-  const getPaletteFromHue = (hue: number) => {
-    return [
-      `hsl(${hue}, 100%, 50%)`,
-      `hsl(${hue + 40}, 100%, 60%)`,
-      `hsl(${hue - 40}, 100%, 60%)`
-    ];
-  };
-
-  const currentColors = customHue !== null
-    ? getPaletteFromHue(customHue)
-    : DEFAULT_PALETTES[activePalette % DEFAULT_PALETTES.length]; // Fallback safe index
-
   const currentPreset = PRESETS[activePresetIdx];
 
   const handleNext = () => {
@@ -60,8 +151,7 @@ export default function App() {
 
   return (
     <div
-      className="relative w-full bg-black text-white selection:bg-[var(--theme-color)] selection:text-white font-[Outfit]"
-      style={{ "--theme-color": currentColors[0] } as React.CSSProperties}
+      className="relative w-full bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[var(--accent-primary)] selection:text-white font-body"
     >
       {/* Background Simulation - Persistent across scroll */}
       <TargetCursor
@@ -72,7 +162,7 @@ export default function App() {
       />
       <div className="fixed inset-0 z-0">
         <LiquidEther
-          colors={currentColors}
+          colors={currentTheme.liquidColors}
           mouseForce={currentPreset.mouseForce}
           cursorSize={currentPreset.cursorSize}
           isViscous={currentPreset.isViscous}
@@ -91,13 +181,13 @@ export default function App() {
       </div>
 
       {/* Floating Header */}
-      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 py-8 flex justify-between items-center ${scrolled ? 'bg-black/80 backdrop-blur-2xl border-b border-white/5 py-4' : 'bg-transparent'}`}>
-        <div className="text-3xl font-black tracking-tighter pointer-events-auto cursor-default select-none transition-transform hover:scale-105">
+      <header ref={navRef} className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 py-8 flex justify-between items-center ${scrolled ? 'bg-black/80 backdrop-blur-2xl border-b border-white/5 py-4' : 'bg-transparent'}`}>
+        <div className="text-3xl font-extrabold tracking-tighter pointer-events-auto cursor-default select-none transition-transform hover:scale-105">
           <span className="text-white">H</span><span className="text-[var(--theme-color)]">K</span>
         </div>
         <nav className="hidden md:flex gap-12 pointer-events-auto">
           <button
-            onClick={() => setColorPickerOpen(true)}
+            onClick={() => setThemeSelectorOpen(true)}
             className="flex items-center gap-2 text-[11px] font-bold hover:text-[var(--theme-color)] transition-colors uppercase tracking-[0.2em]"
             aria-label="Open color picker"
           >
@@ -134,39 +224,41 @@ export default function App() {
           <nav className="flex flex-col items-center gap-12">
             <button
               onClick={() => {
-                setColorPickerOpen(true);
+                setThemeSelectorOpen(true);
                 setMobileMenuOpen(false);
               }}
-              className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors"
+              className="flex items-center gap-4 text-xl font-extrabold uppercase tracking-widest text-white hover:text-[var(--accent-primary)] transition-colors"
               aria-label="Customize theme"
             >
               <Palette size={24} />
               <span>Theme</span>
             </button>
-            <a onClick={() => setMobileMenuOpen(false)} href="#about" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">About</a>
-            <a onClick={() => setMobileMenuOpen(false)} href="#skills" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Skills</a>
-            <a onClick={() => setMobileMenuOpen(false)} href="#projects" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Projects</a>
-            <a onClick={() => setMobileMenuOpen(false)} href="#contact" className="text-xl font-black uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Contact</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#about" className="text-xl font-extrabold uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">About</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#skills" className="text-xl font-extrabold uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Skills</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#projects" className="text-xl font-extrabold uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Projects</a>
+            <a onClick={() => setMobileMenuOpen(false)} href="#contact" className="text-xl font-extrabold uppercase tracking-widest text-white hover:text-[var(--theme-color)] transition-colors">Contact</a>
           </nav>
         </div>
       )}
 
-      {colorPickerOpen && (
-        <HueWheelColorPicker
-          onColorChange={setCustomHue}
-          onClose={() => setColorPickerOpen(false)}
-          initialHue={customHue || 0}
+
+      {themeSelectorOpen && (
+        <ThemeSelector
+          currentThemeId={currentTheme.id}
+          onThemeChange={setCurrentTheme}
+          onClose={() => setThemeSelectorOpen(false)}
         />
       )}
 
       {/* Hero / About Section */}
-      <section id="home" className="relative z-10 w-full h-screen flex flex-col items-center justify-center px-6 pt-20 pointer-events-none">
+      <section id="home" ref={heroRef} className="relative z-10 w-full h-screen flex flex-col items-center justify-center px-6 pt-20 pointer-events-none">
         <div className="text-center max-w-5xl mx-auto flex flex-col items-center mt-[-5vh]">
-          <h1 className="text-[12vw] md:text-[10rem] font-black tracking-tighter leading-[0.85] mb-12 select-none opacity-90 drop-shadow-2xl bg-clip-text text-transparent bg-gradient-to-br from-white via-gray-200 to-gray-500">
-            HEMANTH<br />KUMAR
+          <h1 className="text-[12vw] md:text-[10rem] font-extrabold tracking-tighter leading-[0.85] mb-12 select-none opacity-90 drop-shadow-2xl bg-clip-text text-transparent bg-gradient-to-br from-white via-gray-200 to-gray-500 font-display">
+            <div className="hero-text-line">HEMANTH</div>
+            <div className="hero-text-line">KUMAR</div>
           </h1>
 
-          <div className="mb-16 w-full max-w-md pointer-events-auto">
+          <div className="hero-controls mb-16 w-full max-w-md pointer-events-auto">
             <div className="flex items-center justify-between gap-8 group">
               <button
                 onClick={handlePrev}
@@ -179,8 +271,8 @@ export default function App() {
               </button>
 
               <div className="flex flex-col items-center min-w-[220px]">
-                <div key={currentPreset.name} className="animate-[fadeIn_0.5s_ease-out]">
-                  <h2 className="text-2xl font-black uppercase tracking-[0.2em] mb-1">
+                <div key={currentPreset.name}>
+                  <h2 className="text-2xl font-extrabold uppercase tracking-[0.2em] mb-1 font-display">
                     {currentPreset.name}
                   </h2>
                   <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.1em] max-w-[240px] leading-relaxed">
@@ -213,17 +305,17 @@ export default function App() {
             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.4em] mb-6 select-none">
               Choose Color
             </p>
-            <div className="flex flex-col items-center gap-6 pointer-events-auto">
+            <div className="hero-controls flex flex-col items-center gap-6 pointer-events-auto">
               <button
-                onClick={() => setColorPickerOpen(true)}
+                onClick={() => setThemeSelectorOpen(true)}
                 className="group relative flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all hover:scale-105 active:scale-95"
                 aria-label="Open color picker"
               >
                 <div
                   className="w-8 h-8 rounded-full border border-white/30 shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-colors duration-500"
-                  style={{ backgroundColor: currentColors[0] }}
+                  style={{ backgroundColor: currentTheme.colors.accent }}
                 />
-                <span className="text-sm font-black uppercase tracking-widest">Customize Theme</span>
+                <span className="text-sm font-extrabold uppercase tracking-widest">Customize Theme</span>
                 <Palette size={16} className="opacity-50 group-hover:opacity-100 transition-opacity" />
               </button>
             </div>
@@ -232,9 +324,9 @@ export default function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="relative z-10 w-full min-h-screen pt-24">
-        <div className="px-6 mb-12 max-w-7xl mx-auto flex flex-col items-center">
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-center bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">Skills</h2>
+      <section id="skills" ref={skillsRef} className="relative z-10 w-full min-h-screen pt-24">
+        <div className="px-6 mb-12 max-w-7xl mx-auto flex flex-col items-center skills-title">
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter uppercase text-center bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500 font-display">Skills</h2>
           <div className="w-24 h-1 bg-[var(--theme-color)] mt-4"></div>
         </div>
 
@@ -247,53 +339,55 @@ export default function App() {
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-20" id="about">
-          <div className="flex flex-col justify-center">
-            <h3 className="text-3xl font-black tracking-tighter uppercase mb-8">About</h3>
+        <div className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-20 about-section" id="about">
+          <div className="flex flex-col justify-center about-content">
+            <h3 className="text-3xl font-extrabold tracking-tighter uppercase mb-8 font-display">About</h3>
             <p className="text-gray-300 leading-loose text-lg font-normal tracking-wide">
               Hemanth Kumar focuses on the intersection of Artificial Intelligence and human-centric design.
               I specialize in building intelligent agents and adaptive systems that enhance human capabilities,
               creating software that is not just functional, but truly smart.
             </p>
           </div>
-          <div className="flex items-center justify-center">
-            <ProfileCard
-              name="HEMANTH KUMAR"
-              title="AI Developer"
-              handle="hemanth.ui"
-              status="Active"
-              avatarUrl="/hemanth.jpg"
-              contactText="Connect"
-              showUserInfo={true}
-              enableTilt={true}
-              enableMobileTilt={true}
-              behindGlowColor="#a855f7"
-              onContactClick={() => window.location.href = '#contact'}
-            />
+          <div className="flex items-center justify-center about-content">
+            <div className="about-card-wrapper">
+              <ProfileCard
+                name="HEMANTH KUMAR"
+                title="AI Developer"
+                handle="hemanth.ui"
+                status="Active"
+                avatarUrl="/hemanth.jpg"
+                contactText="Connect"
+                showUserInfo={true}
+                enableTilt={true}
+                enableMobileTilt={true}
+                behindGlowColor={currentTheme.colors.accent}
+                onContactClick={() => window.location.href = '#contact'}
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Projects Section - Bento Grid */}
-      <section id="projects" className="relative z-10 w-full min-h-screen py-32 border-t border-white/5 backdrop-blur-sm bg-black/20">
-        <div className="px-6 max-w-7xl mx-auto">
+      <section id="projects" ref={projectsRef} className="relative z-10 w-full min-h-screen py-32 border-t border-white/5 backdrop-blur-sm bg-black/20">
+        <div className="px-6 max-w-7xl mx-auto projects-title">
           <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div>
-              <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-600">Projects</h2>
+              <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-600 font-display">Projects</h2>
             </div>
-            <p className="text-gray-500 max-w-sm text-sm uppercase tracking-widest leading-loose text-right">
+            <p className="text-gray-500 max-w-sm text-sm uppercase tracking-widest leading-loose text-right font-body">
               A comprehensive record of experimental prototypes and production-ready systems.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[280px]">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[280px] projects-grid">
             {PROJECT_ITEMS.map((project) => (
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 key={project.id}
-                className={`group relative border border-white/10 p-8 rounded-2xl hover:border-white/20 transition-all duration-500 cursor-pointer block overflow-hidden bg-white/[0.03] hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] ${project.className}`}
+                className={`group relative border border-white/10 p-8 rounded-2xl hover:border-white/20 transition-all duration-500 cursor-pointer block overflow-hidden bg-white/[0.03] hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] project-card ${project.className}`}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60 z-10" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--theme-color),transparent)] opacity-0 group-hover:opacity-20 transition-opacity duration-500 z-0" />

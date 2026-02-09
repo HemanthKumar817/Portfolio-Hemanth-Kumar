@@ -90,3 +90,72 @@ export const DEFAULT_PALETTES = [
     ['#00C9FF', '#92FE9D', '#00f2fe'],
     ['#f83600', '#f9d423', '#ee0979'],
 ];
+
+export interface Theme {
+    id: string;
+    name: string;
+    colors: {
+        bgPrimary: string;
+        bgSecondary: string;
+        textPrimary: string;
+        textSecondary: string;
+        accent: string;
+        surface: string;
+    };
+    liquidColors: string[];
+}
+
+export const THEMES: Theme[] = [
+    {
+        id: 'neon-noir',
+        name: 'Neon Noir',
+        colors: {
+            bgPrimary: '#050505',
+            bgSecondary: '#0a0a0a',
+            textPrimary: '#ffffff',
+            textSecondary: '#a3a3a3',
+            accent: '#a855f7', // Purple
+            surface: 'rgba(255, 255, 255, 0.03)'
+        },
+        liquidColors: ['#5227FF', '#FF9FFC', '#B19EEF']
+    },
+    {
+        id: 'alabaster',
+        name: 'Alabaster',
+        colors: {
+            bgPrimary: '#F0F0F0',
+            bgSecondary: '#E5E5E5',
+            textPrimary: '#1a1a1a',
+            textSecondary: '#525252',
+            accent: '#ea580c', // Orange
+            surface: 'rgba(0, 0, 0, 0.03)'
+        },
+        liquidColors: ['#FF9A9E', '#FECFEF', '#FFD1FF']
+    },
+    {
+        id: 'deep-forest',
+        name: 'Deep Forest',
+        colors: {
+            bgPrimary: '#022c22',
+            bgSecondary: '#064e3b',
+            textPrimary: '#ecfccb',
+            textSecondary: '#a7f3d0',
+            accent: '#fbbf24', // Amber
+            surface: 'rgba(255, 255, 255, 0.05)'
+        },
+        liquidColors: ['#10B981', '#34D399', '#059669']
+    },
+    {
+        id: 'cyberpunk',
+        name: 'Cyberpunk',
+        colors: {
+            bgPrimary: '#000000',
+            bgSecondary: '#111111',
+            textPrimary: '#00ffff',
+            textSecondary: '#ff00ff',
+            accent: '#facc15', // Yellow
+            surface: 'rgba(0, 255, 255, 0.05)'
+        },
+        liquidColors: ['#00C9FF', '#92FE9D', '#00f2fe']
+    }
+];

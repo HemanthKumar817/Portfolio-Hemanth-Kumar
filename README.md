@@ -6,14 +6,12 @@ A high-performance, immersive digital portfolio built with the latest web techno
 
 ## 🚀 Key Features
 
--   **Immersive Fluid Simulation**: Powered by Custom WebGL & Three.js, the background features a `LiquidEther` simulation that responds to mouse movement with fluid dynamics.
--   **High-Performance Rendering**: Optimized with `requestAnimationFrame` for scroll events and thorough WebGL resource disposal to prevent memory leaks.
--   **Dynamic Theming**: A global color system controlled by a custom **Hue Wheel Picker** that instantly updates accents, glows, and borders across the app.
--   **Interactive Elements**:
-    -   **Magnetic Cursor**: A custom GSAP-driven cursor with lag-free tracking and parallax effects.
-    -   **StarBorder**: A shader-like glowing border effect for high-emphasis UI elements.
-    -   **Flowing Menu**: A smooth, marquee-style navigation menu.
--   **Responsive Design**: Mobile-first architecture ensuring smooth experiences across all devices.
+-   **Brutalist Design Philosophy**: A bold, high-contrast aesthetic featuring raw borders, large typography, and a strict black/white/yellow/red color palette.
+-   **Interactive Hero Section**: Features GSAP-powered text reveals and mouse-movement parallax effects for an engaging first impression.
+-   **Curated Project Showcase**: A clean, grid-based layout displaying key projects with hover effects and direct GitHub links.
+-   **"Quote" Section**: A dedicated typographic section ("Crafting Tomorrow Inspired By Past") serving as a visual break and statement piece.
+-   **Responsive Layouts**: Fully responsive design ensuring a seamless experience across desktop, tablet, and mobile devices.
+-   **High-Performance Animations**: Optimized animations using GSAP and CSS transitions for smooth interactivity.
 
 ## 🛠️ Technology Stack
 
@@ -56,10 +54,16 @@ This project adheres to strict performance best practices:
 
 ## 📂 Project Structure
 
--   `src/components`: Reusable UI and 3D components (`LiquidEther`, `FlowingMenu`, etc.).
--   `src/constants.ts`: centralized configuration for presets, skills, and project data.
--   `src/App.tsx`: Main application entry point handling routing and layout.
--   `vite.config.ts`: Custom build configuration with manual chunk splitting.
+-   `src/components`:
+    -   `Hero.tsx`: Interactive landing section with GSAP animations.
+    -   `Quote.tsx`: Typographic statement section.
+    -   `Marquee.tsx`: Infinite scrolling text loop.
+    -   `Projects.tsx`: Grid display of portfolio projects.
+    -   `Skills.tsx`: Categorized skills display.
+    -   `About.tsx`: Personal bio and introduction.
+    -   `ContactFooter.tsx`: Interactive footer with social links.
+-   `src/App.tsx`: Main application entry point composing the portfolio sections.
+-   `vite.config.ts`: Vite build configuration.
 
 ## 📧 Contact
 

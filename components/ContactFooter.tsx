@@ -72,8 +72,8 @@ const ContactFooter = () => {
             <a href="mailto:tanguduhemathkumar@gmail.com" style={styles.email}>tanguduhemathkumar@gmail.com</a>
 
             <div style={styles.socials}>
-                <SocialButton text="LINKEDIN" link="" />
-                <SocialButton text="GITHUB" link="#" />
+                <SocialButton text="LINKEDIN" link="https://www.linkedin.com/in/tangudu-hemanth-kumar-25855229a/" />
+                <SocialButton text="GITHUB" link="https://github.com/HemanthKumar817" />
             </div>
 
             <div style={styles.footerBottom}>

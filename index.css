@@ -1,25 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
 :root {
-    /* Default Theme (can be overridden by specific theme classes) */
-    --bg-primary: #050505;
-    --bg-secondary: #0a0a0a;
-    --text-primary: #ffffff;
-    --text-secondary: #a3a3a3;
-    --accent-primary: #fff;
-    --surface-glass: rgba(255, 255, 255, 0.03);
+    --bg-color: #FFFFFF;
+    --text-main: #000000;
+    --accent-primary: #FFE600;
+    --accent-danger: #FF2200;
+    --border-style: 5px solid #000000;
+    --shadow-hard: 6px 6px 0px #000000;
+    --shadow-hover: 9px 9px 0px #000000;
+    --font-heading: 'Bebas Neue', sans-serif;
+    --font-body: 'Courier Prime', monospace;
+}
 
-    --font-display: 'Syne', sans-serif;
-    --font-body: 'Manrope', sans-serif;
-
-    --theme-color: #fff;
-    /* Default, overridden by JS */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    background-color: var(--bg-color);
+    color: var(--text-main);
     font-family: var(--font-body);
     overflow-x: hidden;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
 
 h1,
@@ -28,46 +45,32 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: var(--font-display);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    font-weight: 400;
+    /* Bebas Neue only has 400 */
 }
 
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--bg-primary);
+    background: #fff;
+    border-left: 5px solid #000;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 10px;
+    background: #000;
+    border: 2px solid #fff;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: var(--accent-primary);
 }
 
-/* Utilities */
-.font-display {
-    font-family: var(--font-display);
-}
-
-.font-body {
-    font-family: var(--font-body);
-}
-
-/* Animation Classes */
-.fade-in-up {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Utility for section borders */
+.section-border-bottom {
+    border-bottom: var(--border-style);
 }
